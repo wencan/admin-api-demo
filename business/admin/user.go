@@ -29,7 +29,7 @@ type UserBusiness struct {
 }
 
 // CreateUser 创建用户。
-func (userBusiness UserBusiness) CreateUser(ctx context.Context, req protocolmodel.CreateUserRequest) (*protocolmodel.CreateUserResponse, error) {
+func (userBusiness UserBusiness) CreateUser(ctx context.Context, req *protocolmodel.CreateUserRequest) (*protocolmodel.CreateUserResponse, error) {
 	// 计算摘要
 	salt := uuid.NewString()
 	sum := sha256.Sum256([]byte(req.Password + salt))
@@ -60,7 +60,7 @@ func (userBusiness UserBusiness) CreateUser(ctx context.Context, req protocolmod
 }
 
 // Login 登录。
-func (userBusiness UserBusiness) Login(ctx context.Context, req protocolmodel.LoginRequest) (*protocolmodel.LoginResponse, error) {
+func (userBusiness UserBusiness) Login(ctx context.Context, req *protocolmodel.LoginRequest) (*protocolmodel.LoginResponse, error) {
 	// 根据username，查询用户信息，得到salt
 	user, _, err := admindb.GetUserByUserName(ctx, userBusiness.DBx, req.UserName)
 	if err != nil {
@@ -99,7 +99,7 @@ func (userBusiness UserBusiness) Login(ctx context.Context, req protocolmodel.Lo
 }
 
 // UserInfoByToken 根据token，获得用户信息，包括权限。
-func (userBusiness UserBusiness) UserInfoByToken(ctx context.Context, req protocolmodel.UserInfoByTokenRequest) (*protocolmodel.UserInfoByTokenResponse, error) {
+func (userBusiness UserBusiness) UserInfoByToken(ctx context.Context, req *protocolmodel.UserInfoByTokenRequest) (*protocolmodel.UserInfoByTokenResponse, error) {
 	userID, _, err := rds.UserByToken(ctx, userBusiness.Rds, req.Token)
 	if err != nil {
 		return nil, fmt.Errorf("failed in get user by token, error: [%w]", err)

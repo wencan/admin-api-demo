@@ -8,7 +8,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/spf13/viper v1.14.0
-	github.com/wencan/fastrest v0.0.0-20221217133829-2c64ca19cf61
+	github.com/wencan/fastrest v0.0.0-20221224124524-0dda7ddc09bd
 )
 
 require (

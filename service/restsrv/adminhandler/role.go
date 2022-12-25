@@ -24,29 +24,13 @@ func NewRoleHandler(mydb dbinterface.Execer) *RoleHandler {
 }
 
 // CreateRole 创建角色。
-func (roleBusiness RoleHandler) CreateRole(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	var req protocolmodel.CreateRoleRequest
-	err := httpserver.ReadValidateRequest(ctx, &req, r)
-	if err != nil {
-		httpserver.WriteResponse(ctx, w, r, nil, err)
-		return
-	}
-
-	resp, err := roleBusiness.business.CreateRole(ctx, &req)
-	httpserver.WriteResponse(ctx, w, r, resp, err)
+func (roleBusiness RoleHandler) CreateRole() http.HandlerFunc {
+	handling := httpserver.GenericsHandling[protocolmodel.CreateRoleRequest, protocolmodel.CreateRoleResponse](roleBusiness.business.CreateRole)
+	return httpserver.NewHandler(handling)
 }
 
 // SearchRoles 搜索角色。
-func (roleBusiness RoleHandler) SearchRoles(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	var req protocolmodel.SearchRolesRequest
-	err := httpserver.ReadValidateRequest(ctx, &req, r)
-	if err != nil {
-		httpserver.WriteResponse(ctx, w, r, nil, err)
-		return
-	}
-
-	resp, err := roleBusiness.business.SearchRoles(ctx, &req)
-	httpserver.WriteResponse(ctx, w, r, resp, err)
+func (roleBusiness RoleHandler) SearchRoles() http.HandlerFunc {
+	handling := httpserver.GenericsHandling[protocolmodel.SearchRolesRequest, protocolmodel.SearchRolesResponse](roleBusiness.business.SearchRoles)
+	return httpserver.NewHandler(handling)
 }

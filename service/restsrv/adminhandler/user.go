@@ -1,7 +1,6 @@
 package adminhandler
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/go-redis/redis/v8"
@@ -28,21 +27,18 @@ func NewUserHandler(mydb dbinterface.Execer, rds *redis.Client) *UserHandler {
 
 // Login 登录验证处理。
 func (userHandler UserHandler) LoginHandlerFunc() http.HandlerFunc {
-	return httpserver.NewHandler(httpserver.NewHandlerFunc(func(ctx context.Context, req *protocolmodel.LoginRequest) (*protocolmodel.LoginResponse, error) {
-		return userHandler.business.Login(ctx, *req)
-	}, httpserver.ReadValidateRequest))
+	handling := httpserver.GenericsHandling[protocolmodel.LoginRequest, protocolmodel.LoginResponse](userHandler.business.Login)
+	return httpserver.NewHandler(handling)
 }
 
 // CreateUserHandlerFunc 创建用户。
 func (userHandler UserHandler) CreateUserHandlerFunc() http.HandlerFunc {
-	return httpserver.NewHandler(httpserver.NewHandlerFunc(func(ctx context.Context, req *protocolmodel.CreateUserRequest) (*protocolmodel.CreateUserResponse, error) {
-		return userHandler.business.CreateUser(ctx, *req)
-	}, httpserver.ReadValidateRequest))
+	handling := httpserver.GenericsHandling[protocolmodel.CreateUserRequest, protocolmodel.CreateUserResponse](userHandler.business.CreateUser)
+	return httpserver.NewHandler(handling)
 }
 
 // UserByTokenHandlerFunc 验证用户。
 func (userHandler UserHandler) UserByTokenHandlerFunc() http.HandlerFunc {
-	return httpserver.NewHandler(httpserver.NewHandlerFunc(func(ctx context.Context, req *protocolmodel.UserInfoByTokenRequest) (*protocolmodel.UserInfoByTokenResponse, error) {
-		return userHandler.business.UserInfoByToken(ctx, *req)
-	}, httpserver.ReadValidateRequest))
+	handling := httpserver.GenericsHandling[protocolmodel.UserInfoByTokenRequest, protocolmodel.UserInfoByTokenResponse](userHandler.business.UserInfoByToken)
+	return httpserver.NewHandler(handling)
 }

@@ -24,29 +24,13 @@ func NewPermissionHandler(mydb dbinterface.Execer) *PermissionHandler {
 }
 
 // CreatePermission 创建权限。
-func (permissionBusiness PermissionHandler) CreatePermission(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	var req protocolmodel.CreatePermissionRequest
-	err := httpserver.ReadValidateRequest(ctx, &req, r)
-	if err != nil {
-		httpserver.WriteResponse(ctx, w, r, nil, err)
-		return
-	}
-
-	resp, err := permissionBusiness.business.CreatePermission(ctx, &req)
-	httpserver.WriteResponse(ctx, w, r, resp, err)
+func (permissionBusiness PermissionHandler) CreatePermission() http.HandlerFunc {
+	handling := httpserver.GenericsHandling[protocolmodel.CreatePermissionRequest, protocolmodel.CreatePermissionResponse](permissionBusiness.business.CreatePermission)
+	return httpserver.NewHandler(handling)
 }
 
 // SearchPermissions 搜索权限。
-func (permissionBusiness PermissionHandler) SearchPermissions(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	var req protocolmodel.SearchPermissionsRequest
-	err := httpserver.ReadValidateRequest(ctx, &req, r)
-	if err != nil {
-		httpserver.WriteResponse(ctx, w, r, nil, err)
-		return
-	}
-
-	resp, err := permissionBusiness.business.SearchPermissions(ctx, &req)
-	httpserver.WriteResponse(ctx, w, r, resp, err)
+func (permissionBusiness PermissionHandler) SearchPermissions() http.HandlerFunc {
+	handling := httpserver.GenericsHandling[protocolmodel.SearchPermissionsRequest, protocolmodel.SearchPermissionsResponse](permissionBusiness.business.SearchPermissions)
+	return httpserver.NewHandler(handling)
 }
