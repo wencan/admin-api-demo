@@ -98,7 +98,7 @@ func (userBusiness UserBusiness) Login(ctx context.Context, req *protocolmodel.L
 	}, nil
 }
 
-// UserInfoByToken 根据token，获得用户信息，包括权限。
+// UserInfoByToken 根据token，获得用户信息，包括权限。如果没认证，返回Unauthenticated错误。
 func (userBusiness UserBusiness) UserInfoByToken(ctx context.Context, req *protocolmodel.UserInfoByTokenRequest) (*protocolmodel.UserInfoByTokenResponse, error) {
 	userID, _, err := rds.UserByToken(ctx, userBusiness.Rds, req.Token)
 	if err != nil {
@@ -133,4 +133,13 @@ func (userBusiness UserBusiness) UserInfoByToken(ctx context.Context, req *proto
 		User:            user,
 		PermissionCodes: permissionCodes,
 	}, nil
+}
+
+// UserIDByToken 根据token取得userID。
+func (userBusiness UserBusiness) UserIDByToken(ctx context.Context, token string) (userID int64, err error) {
+	userID, _, err = rds.UserByToken(ctx, userBusiness.Rds, token)
+	if err != nil {
+		return 0, fmt.Errorf("failed in get user by token, error: [%w]", err)
+	}
+	return userID, nil
 }

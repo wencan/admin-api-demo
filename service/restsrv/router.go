@@ -7,9 +7,11 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/wencan/fastrest/restserver/httpserver"
+	"github.com/wencan/go-service-demo/business/admin"
 	"github.com/wencan/go-service-demo/client/mydb/dbinterface"
 	"github.com/wencan/go-service-demo/service/restsrv/adminhandler"
 	"github.com/wencan/go-service-demo/service/restsrv/healthhandler"
+	"github.com/wencan/go-service-demo/service/restsrv/middleware"
 )
 
 // NewRestRouer 创建rest服务路由。
@@ -23,6 +25,9 @@ func NewRestRouer(mydb dbinterface.Execer, rds *redis.Client) http.HandlerFunc {
 			return next(ctx, request)
 		}
 	})
+
+	// 用户认证中间件
+	requireLogin := middleware.NewLoginMiddleware(admin.UserBusiness{DBx: mydb, Rds: rds}, true)
 
 	// 健康检查
 	healthHandler := healthhandler.NewHealthStatusHandler(mydb, rds)
@@ -48,9 +53,9 @@ func NewRestRouer(mydb dbinterface.Execer, rds *redis.Client) http.HandlerFunc {
 	// 搜索角色
 	mux.HandleFunc("/role/search", roleHandler.SearchRoles())
 	// 创建权限
-	mux.HandleFunc("/permission/create", permissionHandler.CreatePermission())
+	mux.HandleFunc("/permission/create", requireLogin(permissionHandler.CreatePermission()))
 	// 搜索权限
-	mux.HandleFunc("/permission/search", permissionHandler.SearchPermissions())
+	mux.HandleFunc("/permission/search", requireLogin(permissionHandler.SearchPermissions()))
 
 	return mux.ServeHTTP
 }
