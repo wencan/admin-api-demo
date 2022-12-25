@@ -12,19 +12,19 @@ import (
 var server *httpserver.Server
 
 // Startup 启动服务。
-func Startup(ctx context.Context, addr string, mydb dbinterface.Execer, rds *redis.Client) error {
+func Startup(ctx context.Context, addr string, mydb dbinterface.Execer, rds *redis.Client) (listenAddr string, err error) {
 	router := NewRestRouer(mydb, rds)
 	server = httpserver.NewServer(ctx, &http.Server{
 		Addr:    addr,
 		Handler: router,
 	})
 
-	_, err := server.Start(ctx) //  启动监听，开始服务。直至收到SIGTERM、SIGINT信号，或Stop被调用。
+	addr, err = server.Start(ctx) //  启动监听，开始服务。直至收到SIGTERM、SIGINT信号，或Stop被调用。
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return addr, nil
 }
 
 // Shutdown 关闭监听，不再接收新连接。

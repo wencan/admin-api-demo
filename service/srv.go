@@ -9,7 +9,7 @@ import (
 )
 
 // Startup 启动服务。
-func Startup(ctx context.Context, httpAddr string, mydb dbinterface.Execer, rds *redis.Client) error {
+func Startup(ctx context.Context, httpAddr string, mydb dbinterface.Execer, rds *redis.Client) (listenAddr string, err error) {
 	return restsrv.Startup(ctx, httpAddr, mydb, rds)
 }
 

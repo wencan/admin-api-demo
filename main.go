@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"log"
 
 	"github.com/wencan/go-service-demo/client/pool"
 	"github.com/wencan/go-service-demo/conf"
@@ -33,10 +34,11 @@ func main() {
 	}
 
 	// 启动服务
-	err = service.Startup(ctx, conf.C.HTTPAddr, pool.GetMySQLDBx(), pool.GetRds())
+	addr, err := service.Startup(ctx, conf.C.HTTPAddr, pool.GetMySQLDBx(), pool.GetRds())
 	if err != nil {
 		panic(err)
 	}
+	log.Println("Listen running at:", addr)
 	// 等待服务结束
 	// 收到SIGTERM、SIGINT信号，并且处理完全部已经接受的请求。
 	err = service.Wait(ctx)

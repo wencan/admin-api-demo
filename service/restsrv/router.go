@@ -1,6 +1,8 @@
 package restsrv
 
 import (
+	"context"
+	"log"
 	"net/http"
 
 	"github.com/go-redis/redis/v8"
@@ -14,6 +16,13 @@ import (
 func NewRestRouer(mydb dbinterface.Execer, rds *redis.Client) http.HandlerFunc {
 	// 配置默认的Handler工厂
 	httpserver.DefaultHandlerFactory.ReadRequestFunc = httpserver.ReadValidateRequest
+	httpserver.DefaultHandlerFactory.Middleware = httpserver.ChainHandlerMiddlewares(httpserver.RecoveryMiddleware, func(next httpserver.HandleFunc) httpserver.HandleFunc {
+		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+			r := httpserver.RequestFromContext(ctx)
+			log.Println(r.Method, r.RequestURI)
+			return next(ctx, request)
+		}
+	})
 
 	// 健康检查
 	healthHandler := healthhandler.NewHealthStatusHandler(mydb, rds)
