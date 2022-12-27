@@ -226,6 +226,10 @@ github.com/wencan/fastrest v0.0.0-20221217133829-2c64ca19cf61 h1:Aw3EnCqS+JPxqKt
 github.com/wencan/fastrest v0.0.0-20221217133829-2c64ca19cf61/go.mod h1:gVPIDVtWStBhCYmOvARnBB9o5/o4kaptAaOI4SqdBRo=
 github.com/wencan/fastrest v0.0.0-20221224124524-0dda7ddc09bd h1:/B14qojgWehfciVTnrfitc8UTIbex9Ktn8Bl/aOIOTw=
 github.com/wencan/fastrest v0.0.0-20221224124524-0dda7ddc09bd/go.mod h1:gVPIDVtWStBhCYmOvARnBB9o5/o4kaptAaOI4SqdBRo=
+github.com/wencan/fastrest v0.0.0-20221226105540-3c2e3302346b h1:Xi8+jEI05eLBV8Drf81eF89xP4gML1oEvNMUVwMbIGI=
+github.com/wencan/fastrest v0.0.0-20221226105540-3c2e3302346b/go.mod h1:gVPIDVtWStBhCYmOvARnBB9o5/o4kaptAaOI4SqdBRo=
+github.com/wencan/fastrest v0.0.0-20221227061127-7b177e244646 h1:F7WRyIL84tIjr8QACA/fAatiW6gQHRhrQNNb3AkVHLU=
+github.com/wencan/fastrest v0.0.0-20221227061127-7b177e244646/go.mod h1:gVPIDVtWStBhCYmOvARnBB9o5/o4kaptAaOI4SqdBRo=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
